@@ -57,15 +57,19 @@ class GameCenter
 		#end
 		
 		#if !cpp
-			return false;
+			return "Not on iOS";
 		#end
 	}
 	
-	public static function getPlayerID():Void 
+	public static function getPlayerID():String 
 	{
 		#if cpp
-			gamecenter_playerid();
-		#end	
+			return gamecenter_playerid();
+		#end
+		
+		#if !cpp
+			return "Not on iOS";
+		#end
 	}
 	
 	public static function showLeaderboard(categoryID:String):Void 
