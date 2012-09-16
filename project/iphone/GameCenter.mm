@@ -3,6 +3,8 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <GameKit/GameKit.h>
 
+extern "C" void sendGameCenterEvent(const char* event, const char* data);
+
 typedef void (*FunctionType)();
 
 @interface GKViewDelegate : NSObject <GKAchievementViewControllerDelegate,GKLeaderboardViewControllerDelegate>
@@ -84,9 +86,7 @@ namespace gamecenter
     
     void achievementViewDismissed();
 	void leaderboardViewDismissed();
-    
-    //extern "C" void nme_extensions_send_event(Event &inEvent);
-    
+
     //---
     
     //USER
@@ -136,12 +136,12 @@ namespace gamecenter
 			if(error == nil)
             {
 				registerForAuthenticationNotification();
-				//dispatchHaxeEvent(AUTH_SUCCEEDED);
+				sendGameCenterEvent("auth-success", "");
 			}
             
             else
             {
-				//dispatchHaxeEvent(AUTH_FAILED);
+				sendGameCenterEvent("auth-failed", "");
 			}
 		}];
 	}
@@ -215,13 +215,13 @@ namespace gamecenter
                 {
 					NSLog(@"Game Center: Error occurred reporting score-");
 					NSLog(@"  %@", [error userInfo]);
-					//dispatchHaxeEvent(SCORE_REPORT_FAILED);
+					sendGameCenterEvent("score-success", categoryID);
 				}
                 
                 else
                 {
 					NSLog(@"Game Center: Score was successfully sent");
-					//dispatchHaxeEvent(SCORE_REPORT_SUCCEEDED);
+					sendGameCenterEvent("score-failed", categoryID);
 				}
 			}];   
 		}
@@ -255,12 +255,12 @@ namespace gamecenter
             if(error != nil)
             {
                 NSLog(@"  %@", [error userInfo]);
-                //dispatchHaxeEvent(ACHIEVEMENT_RESET_FAILED);
+                sendGameCenterEvent("achieve-reset-failed", "");
             }
             
             else
             {
-                //dispatchHaxeEvent(ACHIEVEMENT_RESET_SUCCEEDED);
+                 sendGameCenterEvent("achieve-reset-success", "");
             }
         }];
     }
@@ -280,13 +280,13 @@ namespace gamecenter
                 {
 					NSLog(@"Game Center: Error occurred reporting achievement-");
 					NSLog(@"  %@", [error userInfo]);
-					//dispatchHaxeEvent(ACHIEVEMENT_REPORT_FAILED);
+					sendGameCenterEvent("achieve-failed", achievementID);
 				}
                 
                 else
                 {
 					NSLog(@"Game Center: Achievement report successfully sent");
-					//dispatchHaxeEvent(ACHIEVEMENT_REPORT_SUCCEEDED);
+					sendGameCenterEvent("achieve-success", achievementID);
 				}
                 
 			}];
@@ -294,7 +294,7 @@ namespace gamecenter
         
         else 
         {
-			//dispatchHaxeEvent(ACHIEVEMENT_REPORT_FAILED);
+			sendGameCenterEvent("achieve-failed", achievementID);
 		}
 		
 		[strAchievement release];
@@ -302,24 +302,18 @@ namespace gamecenter
     }
     
     //CALLBACKS
-    
-    /*void dispatchHaxeEvent(EventType eventId)
-    {
-		Event evt(eventId);
-		nme_extensions_send_event(evt);
-	}*/
-    
+
     void registerForAuthenticationNotification()
     {
 		// TODO: need to REMOVE OBSERVER on dispose
 		CFNotificationCenterAddObserver
 		(
-         CFNotificationCenterGetLocalCenter(),
-         NULL,
-         &authenticationChanged,
-         (CFStringRef)GKPlayerAuthenticationDidChangeNotificationName,
-         NULL,
-         CFNotificationSuspensionBehaviorDeliverImmediately
+        	CFNotificationCenterGetLocalCenter(),
+         	NULL,
+         	&authenticationChanged,
+         	(CFStringRef)GKPlayerAuthenticationDidChangeNotificationName,
+         	NULL,
+         	CFNotificationSuspensionBehaviorDeliverImmediately
         );
 	}
     

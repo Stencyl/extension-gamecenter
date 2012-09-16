@@ -12,7 +12,15 @@
 
 using namespace gamecenter;
 
+AutoGCRoot* gameCenterEventHandle = 0;
+
 #ifdef IPHONE
+
+static void gamecenter_set_event_handle(value onEvent)
+{
+	gameCenterEventHandle = new AutoGCRoot(onEvent);
+}
+DEFINE_PRIM(gamecenter_set_event_handle, 1);
 
 static void gamecenter_initialize() 
 {
@@ -91,4 +99,13 @@ DEFINE_ENTRY_POINT(gamecenter_main);
 extern "C" int gamecenter_register_prims() 
 { 
     return 0; 
+}
+
+extern "C" void sendGameCenterEvent(const char* type, const char* data)
+{
+    printf("Send Event: %s\n", type);
+    value o = alloc_empty_object();
+    alloc_field(o,val_id("type"),alloc_string(type));
+    alloc_field(o,val_id("data"),alloc_string(data));
+    val_call1(gameCenterEventHandle->get(), o);
 }

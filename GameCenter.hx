@@ -8,16 +8,83 @@ import neko.Lib;
 import nme.Lib;
 #end
 
+import com.stencyl.Engine;
+import com.stencyl.event.EventMaster;
+import com.stencyl.event.StencylEvent;
+
 import nme.utils.ByteArray;
 import nme.display.BitmapData;
 import nme.geom.Rectangle;
 
 class GameCenter 
 {	
+	private static var initialized:Bool = false;
+
+	private static function notifyListeners(inEvent:Dynamic)
+	{
+		#if cpp
+		var type:String = Std.string(Reflect.field(inEvent, "type"));
+		var data:String = Std.string(Reflect.field(inEvent, "data"));
+		
+		if(type == "auth-success")
+		{
+			trace("Game Center: Authenticated");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_READY));
+		}
+		
+		else if(type == "auth-failed")
+		{
+			trace("Game Center: Failed to Authenticate");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_READY_FAIL, data));
+		}
+		
+		else if(type == "score-success")
+		{
+			trace("Game Center: Submitted Score");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_SCORE, data));
+		}
+		
+		else if(type == "score-failed")
+		{
+			trace("Game Center: Failed to Submit Score");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_SCORE_FAIL, data));
+		}
+		
+		else if(type == "achieve-success")
+		{
+			trace("Game Center: Submitted Achievement");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_ACHIEVEMENT, data));
+		}
+		
+		else if(type == "achieve-failed")
+		{
+			trace("Game Center: Failed to Submit Achievement");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_ACHIEVEMENT_FAIL, data));
+		}
+		
+		else if(type == "achieve-reset-success")
+		{
+			trace("Game Center: Reset Achievements");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_ACHIEVEMENT_RESET, data));
+		}
+		
+		else if(type == "achieve-reset-failed")
+		{
+			trace("Game Center: Failed to Reset Achievements");
+			Engine.events.addGameCenterEvent(new StencylEvent(StencylEvent.GAME_CENTER_ACHIEVEMENT_RESET_FAIL, data));
+		}
+		#end
+	}
+
 	public static function initialize():Void 
 	{
 		#if cpp
+		if(!initialized)
+		{
+			set_event_handle(notifyListeners);
 			gamecenter_initialize();
+			initialized = true;
+		}
 		#end	
 	}
 
@@ -108,6 +175,7 @@ class GameCenter
 	}
 	
 	#if cpp
+	private static var set_event_handle = nme.Loader.load("gamecenter_set_event_handle", 1);
 	private static var gamecenter_initialize = Lib.load("gamecenter", "gamecenter_initialize", 0);
 	private static var gamecenter_authenticate = Lib.load("gamecenter", "gamecenter_authenticate", 0);
 	private static var gamecenter_isavailable = Lib.load("gamecenter", "gamecenter_isavailable", 0);
