@@ -215,13 +215,13 @@ namespace gamecenter
                 {
 					NSLog(@"Game Center: Error occurred reporting score-");
 					NSLog(@"  %@", [error userInfo]);
-					sendGameCenterEvent("score-success", categoryID);
+					sendGameCenterEvent("score-failed", categoryID);
 				}
                 
                 else
                 {
 					NSLog(@"Game Center: Score was successfully sent");
-					sendGameCenterEvent("score-failed", categoryID);
+					sendGameCenterEvent("score-success", categoryID);
 				}
 			}];   
 		}
