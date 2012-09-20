@@ -7,10 +7,35 @@
 #endif
 
 #include <hx/CFFI.h>
-#include "GameCenter.h"
+#include <hx/Macros.h>
 #include <stdio.h>
+#include <hxcpp.h>
+#include "GameCenter.h"
+
+#ifdef ANDROID
+#include <jni.h>
+#endif
 
 using namespace gamecenter;
+
+#ifdef ANDROID
+	extern JNIEnv *GetEnv();
+	enum JNIType{
+	   jniUnknown,
+	   jniVoid,
+	   jniObjectString,
+	   jniObjectArray,
+	   jniObject,
+	   jniBoolean,
+	   jniByte,
+	   jniChar,
+	   jniShort,
+	   jniInt,
+	   jniLong,
+	   jniFloat,
+	   jniDouble,
+	};
+#endif
 
 AutoGCRoot* gameCenterEventHandle = 0;
 

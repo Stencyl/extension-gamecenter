@@ -8,6 +8,10 @@ import neko.Lib;
 import nme.Lib;
 #end
 
+#if android
+import nme.JNI;
+#end
+
 import com.stencyl.Engine;
 import com.stencyl.event.EventMaster;
 import com.stencyl.event.StencylEvent;
@@ -19,10 +23,14 @@ import nme.geom.Rectangle;
 class GameCenter 
 {	
 	private static var initialized:Bool = false;
+	
+	private static inline var ANDROID_CLASS:String = "GreeSDK";
+	private static var _init_func:Dynamic;
+	
 
 	private static function notifyListeners(inEvent:Dynamic)
 	{
-		#if cpp
+		#if(mobile && !android)
 		var type:String = Std.string(Reflect.field(inEvent, "type"));
 		var data:String = Std.string(Reflect.field(inEvent, "data"));
 		
@@ -78,7 +86,19 @@ class GameCenter
 
 	public static function initialize():Void 
 	{
-		#if cpp
+		#if android
+		/*if(_init_func == null)
+		{
+			//_init_func = JNI.createStaticMethod(ANDROID_CLASS, "init", "()Ljava/lang/String;", true);
+			_init_func = JNI.createStaticMethod("Test", "init", "(Ljava/lang/String;)Ljava/lang/String;", true);
+		}
+
+		var args = new Array<Dynamic>();
+		args.push("testing");
+		_init_func(args);*/
+		#end
+	
+		#if(mobile && !android)
 		if(!initialized)
 		{
 			set_event_handle(notifyListeners);
@@ -90,91 +110,83 @@ class GameCenter
 
 	public static function authenticate():Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_authenticate();
 		#end	
 	}
 	
 	public static function isAvailable():Bool 
 	{
-		#if cpp
+		#if(mobile && !android)
 			return gamecenter_isavailable();
-		#end
-		
-		#if !cpp
+		#else
 			return false;
 		#end
 	}
 	
 	public static function isAuthenticated():Bool 
 	{
-		#if cpp
+		#if(mobile && !android)
 			return gamecenter_isauthenticated();
-		#end
-		
-		#if !cpp
+		#else
 			return false;
 		#end
 	}
 	
 	public static function getPlayerName():String 
 	{
-		#if cpp
+		#if(mobile && !android)
 			return gamecenter_playername();
-		#end
-		
-		#if !cpp
-			return "Not on iOS";
+		#else
+			return "None";
 		#end
 	}
 	
 	public static function getPlayerID():String 
 	{
-		#if cpp
+		#if(mobile && !android)
 			return gamecenter_playerid();
-		#end
-		
-		#if !cpp
-			return "Not on iOS";
+		#else
+			return "None";
 		#end
 	}
 	
 	public static function showLeaderboard(categoryID:String):Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_showleaderboard(categoryID);
 		#end	
 	}
 	
 	public static function showAchievements():Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_showachievements();
 		#end	
 	}
 	
 	public static function reportScore(categoryID:String, score:Int):Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_reportscore(categoryID, score);
 		#end	
 	}
 	
 	public static function reportAchievement(achievementID:String, percent:Float):Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_reportachievement(achievementID, percent);
 		#end	
 	}
 	
 	public static function resetAchievements():Void 
 	{
-		#if cpp
+		#if(mobile && !android)
 			gamecenter_resetachievements();
 		#end	
 	}
 	
-	#if cpp
+	#if(mobile && !android)
 	private static var set_event_handle = nme.Loader.load("gamecenter_set_event_handle", 1);
 	private static var gamecenter_initialize = Lib.load("gamecenter", "gamecenter_initialize", 0);
 	private static var gamecenter_authenticate = Lib.load("gamecenter", "gamecenter_authenticate", 0);
