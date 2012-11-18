@@ -192,7 +192,7 @@ namespace gamecenter
 			leaderboardController.leaderboardDelegate = viewDelegate;
 			UIViewController* glView2 = [[UIViewController alloc] init];
 			[window addSubview: glView2.view];
-			[glView2 presentModalViewController:leaderboardController animated:YES];
+			[glView2 presentModalViewController:leaderboardController animated:NO];
 		}
 		
 		[strCategory release];
@@ -243,7 +243,7 @@ namespace gamecenter
 			achievements.achievementDelegate = viewDelegate;
 			UIViewController* glView2 = [[UIViewController alloc] init];
 			[window addSubview: glView2.view];
-			[glView2 presentModalViewController: achievements animated:YES];
+			[glView2 presentModalViewController: achievements animated:NO];
 			//dispatchHaxeEvent(ACHIEVEMENTS_VIEW_OPENED);
 		}
     }
@@ -272,7 +272,12 @@ namespace gamecenter
 		GKAchievement* achievement = [[[GKAchievement alloc] initWithIdentifier:strAchievement] autorelease];
         
 		if(achievement)
-        {      
+        {
+        	/*if(percent >= 1)
+        	{
+        		achievement.showsCompletionBanner = YES;
+        	}*/
+        	
 			achievement.percentComplete = percent;    
 			[achievement reportAchievementWithCompletionHandler:^(NSError *error)
             {
