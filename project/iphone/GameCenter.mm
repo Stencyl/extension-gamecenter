@@ -38,16 +38,18 @@ static UIViewController* gcViewController;
     [super dealloc];
 }
 
-- (void)achievementViewControllerDidFinish:(GKAchievementViewController*)viewController
+- (void)achievementViewControllerDidFinish:(GKAchievementViewController*)achViewController
 {
-    [viewController dismissModalViewControllerAnimated:YES ];
+    [gcViewController dismissModalViewControllerAnimated:YES ];
    
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        [viewController.view.superview removeFromSuperview];
+        [gcViewController.view.superview removeFromSuperview];
     else
-        [viewController.view removeFromSuperview];
+        [gcViewController.view removeFromSuperview];
     
-	[viewController release];
+	[gcViewController release];
+    gcViewController = NULL;
+    [achViewController release];
 	onAchievementFinished();
 }
 
@@ -65,7 +67,7 @@ static UIViewController* gcViewController;
     [gcViewController release];
     gcViewController = NULL;
     [lbViewController release];
-    
+    onLeaderboardFinished();
 }
 
 @end
@@ -260,9 +262,9 @@ namespace gamecenter
 		if(achievements != nil)
         {
 			achievements.achievementDelegate = viewDelegate;
-			UIViewController* glView2 = [[UIViewController alloc] init];
-			[window addSubview: glView2.view];
-			[glView2 presentModalViewController: achievements animated:NO];
+			gcViewController = [[UIViewController alloc] init];
+			[window addSubview: gcViewController.view];
+			[gcViewController presentModalViewController: achievements animated:NO];
 			//dispatchHaxeEvent(ACHIEVEMENTS_VIEW_OPENED);
 		}
     }
