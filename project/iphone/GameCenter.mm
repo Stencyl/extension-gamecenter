@@ -7,6 +7,9 @@ extern "C" void sendGameCenterEvent(const char* event, const char* data);
 
 typedef void (*FunctionType)();
 
+// This is the host ViewController that will contain our modal GC views
+static UIViewController* gcViewController;
+
 @interface GKViewDelegate : NSObject <GKAchievementViewControllerDelegate,GKLeaderboardViewControllerDelegate>
 {
 }
@@ -37,18 +40,32 @@ typedef void (*FunctionType)();
 
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController*)viewController
 {
-    [viewController dismissModalViewControllerAnimated:YES];
-	[viewController.view.superview removeFromSuperview];
+    [viewController dismissModalViewControllerAnimated:YES ];
+   
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        [viewController.view.superview removeFromSuperview];
+    else
+        [viewController.view removeFromSuperview];
+    
 	[viewController release];
 	onAchievementFinished();
 }
 
-- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController*)viewController
+
+
+- (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController*)lbViewController
 {
-    [viewController dismissModalViewControllerAnimated:YES];
-	[viewController.view.superview removeFromSuperview];
-	[viewController release];
-	onLeaderboardFinished();
+    [gcViewController dismissModalViewControllerAnimated:YES];
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+        [gcViewController.view.superview removeFromSuperview];
+    else
+        [gcViewController.view removeFromSuperview];
+    
+    [gcViewController release];
+    gcViewController = NULL;
+    [lbViewController release];
+    
 }
 
 @end
@@ -105,7 +122,8 @@ namespace gamecenter
 			viewDelegate.onLeaderboardFinished = &leaderboardViewDismissed;
             
 			isInitialized = 1;
-            authenticateLocalUser();
+            authenticateLocalUser();//JI slightly diff
+            //JI diff not return bool
 		}
     }
     
@@ -190,9 +208,10 @@ namespace gamecenter
         {
 			leaderboardController.category = strCategory;
 			leaderboardController.leaderboardDelegate = viewDelegate;
-			UIViewController* glView2 = [[UIViewController alloc] init];
-			[window addSubview: glView2.view];
-			[glView2 presentModalViewController:leaderboardController animated:NO];
+			gcViewController = [[UIViewController alloc] init];
+			[window addSubview: gcViewController.view];
+            
+			[gcViewController presentModalViewController:leaderboardController animated:NO];
 		}
 		
 		[strCategory release];
