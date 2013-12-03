@@ -3,12 +3,15 @@
 #import <CoreFoundation/CoreFoundation.h>
 #import <GameKit/GameKit.h>
 
+
+//NOTE:  These classes use some methods that are marked depricated as of IOS 7.  (e.g. presentModalViewController, etc..)
+//       They are still functioning, but at sometime the code will have to be refactored.  For now they will generate
+//       errors.  However they are still usable so I left them in to limit the amount of change/risk shorterm.
+
+
 extern "C" void sendGameCenterEvent(const char* event, const char* data);
 
 typedef void (*FunctionType)();
-
-// This is the host ViewController that will contain our modal GC views
-static UIViewController* gcViewController;
 
 @interface GKViewDelegate : NSObject <GKAchievementViewControllerDelegate,GKLeaderboardViewControllerDelegate>
 {
@@ -40,15 +43,9 @@ static UIViewController* gcViewController;
 
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController*)achViewController
 {
-    [gcViewController dismissModalViewControllerAnimated:YES ];
-   
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        [gcViewController.view.superview removeFromSuperview];
-    else
-        [gcViewController.view removeFromSuperview];
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    [window.rootViewController dismissModalViewControllerAnimated:YES];
     
-	[gcViewController release];
-    gcViewController = NULL;
     [achViewController release];
 	onAchievementFinished();
 }
@@ -57,15 +54,9 @@ static UIViewController* gcViewController;
 
 - (void)leaderboardViewControllerDidFinish:(GKLeaderboardViewController*)lbViewController
 {
-    [gcViewController dismissModalViewControllerAnimated:YES];
+    UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    [window.rootViewController dismissModalViewControllerAnimated:YES];
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-        [gcViewController.view.superview removeFromSuperview];
-    else
-        [gcViewController.view removeFromSuperview];
-    
-    [gcViewController release];
-    gcViewController = NULL;
     [lbViewController release];
     onLeaderboardFinished();
 }
@@ -210,10 +201,7 @@ namespace gamecenter
         {
 			leaderboardController.category = strCategory;
 			leaderboardController.leaderboardDelegate = viewDelegate;
-			gcViewController = [[UIViewController alloc] init];
-			[window addSubview: gcViewController.view];
-            
-			[gcViewController presentModalViewController:leaderboardController animated:NO];
+			[window.rootViewController presentModalViewController:leaderboardController animated:YES];
 		}
 		
 		[strCategory release];
@@ -262,9 +250,7 @@ namespace gamecenter
 		if(achievements != nil)
         {
 			achievements.achievementDelegate = viewDelegate;
-			gcViewController = [[UIViewController alloc] init];
-			[window addSubview: gcViewController.view];
-			[gcViewController presentModalViewController: achievements animated:NO];
+			[window.rootViewController presentModalViewController: achievements animated:YES];
 			//dispatchHaxeEvent(ACHIEVEMENTS_VIEW_OPENED);
 		}
     }

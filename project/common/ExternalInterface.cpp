@@ -7,7 +7,6 @@
 #endif
 
 #include <hx/CFFI.h>
-#include <hx/Macros.h>
 #include <stdio.h>
 #include <hxcpp.h>
 #include "GameCenter.h"
