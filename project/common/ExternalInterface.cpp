@@ -112,6 +112,12 @@ static void gamecenter_resetachievements()
 }
 DEFINE_PRIM(gamecenter_resetachievements, 0);
 
+static void gamecenter_showachievementbanner(value title, value message)
+{
+	showAchievementBanner(val_string(title),val_string(message));
+}
+DEFINE_PRIM(gamecenter_showachievementbanner, 2);
+
 #endif
 
 extern "C" void gamecenter_main() 

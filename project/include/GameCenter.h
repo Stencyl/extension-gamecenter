@@ -20,6 +20,7 @@ namespace gamecenter
     void showAchievements();
     void resetAchievements();
     void reportAchievement(const char* achievementID, float percent);
+    void showAchievementBanner(const char* title, const char* message);
     
     //Other
     void registerForAuthenticationNotification();

@@ -89,6 +89,7 @@ namespace gamecenter
     void showAchievements();
     void resetAchievements();
     void reportAchievement(const char* achievementID, float percent);
+    void showAchievementBanner(const char* title, const char* message);
     
     //Callbacks
     void registerForAuthenticationNotification();
@@ -311,6 +312,17 @@ namespace gamecenter
 		
 		[strAchievement release];
 		[pool drain];
+    }
+    
+    void showAchievementBanner(const char* title, const char* message)
+    {
+    	NSString* t = [[NSString alloc] initWithUTF8String:title];
+    	NSString* m = [[NSString alloc] initWithUTF8String:message];
+    	
+    	[GKNotificationBanner showBannerWithTitle:t message:m completionHandler:nil];
+    	
+    	[t release];
+    	[m release];
     }
     
     //CALLBACKS

@@ -186,6 +186,13 @@ class GameCenter
 		#end	
 	}
 	
+	public static function showAchievementBanner(title:String, message:String):Void
+	{
+		#if(mobile && !android && !air)
+			gamecenter_showachievementbanner(title, message);
+		#end	
+	}
+	
 	#if(mobile && !android && !air)
 	private static var set_event_handle = nme.Loader.load("gamecenter_set_event_handle", 1);
 	private static var gamecenter_initialize = Lib.load("gamecenter", "gamecenter_initialize", 0);
@@ -201,5 +208,6 @@ class GameCenter
 	private static var gamecenter_reportscore = Lib.load("gamecenter", "gamecenter_reportscore", 2);
 	private static var gamecenter_reportachievement = Lib.load("gamecenter", "gamecenter_reportachievement", 2);
 	private static var gamecenter_resetachievements = Lib.load("gamecenter", "gamecenter_resetachievements", 0);
+	private static var gamecenter_showachievementbanner = Lib.load("gamecenter", "gamecenter_showachievementbanner", 2);
 	#end
 }
