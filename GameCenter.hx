@@ -5,20 +5,20 @@ import cpp.Lib;
 #elseif neko
 import neko.Lib;
 #else
-import nme.Lib;
+import openfl.Lib;
 #end
 
 #if android
-import nme.JNI;
+import openfl.utils.JNI;
 #end
 
 import com.stencyl.Engine;
 import com.stencyl.event.EventMaster;
 import com.stencyl.event.StencylEvent;
 
-import nme.utils.ByteArray;
-import nme.display.BitmapData;
-import nme.geom.Rectangle;
+import openfl.utils.ByteArray;
+import openfl.display.BitmapData;
+import openfl.geom.Rectangle;
 
 class GameCenter 
 {	
@@ -194,7 +194,7 @@ class GameCenter
 	}
 	
 	#if(mobile && !android && !air)
-	private static var set_event_handle = nme.Loader.load("gamecenter_set_event_handle", 1);
+	private static var set_event_handle = Lib.load("gamecenter", "gamecenter_set_event_handle", 1);
 	private static var gamecenter_initialize = Lib.load("gamecenter", "gamecenter_initialize", 0);
 	private static var gamecenter_authenticate = Lib.load("gamecenter", "gamecenter_authenticate", 0);
 	private static var gamecenter_isavailable = Lib.load("gamecenter", "gamecenter_isavailable", 0);
