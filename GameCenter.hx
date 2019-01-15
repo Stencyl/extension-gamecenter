@@ -2,8 +2,6 @@ package;
 
 #if cpp
 import cpp.Lib;
-#elseif neko
-import neko.Lib;
 #else
 import openfl.Lib;
 #end
@@ -30,7 +28,7 @@ class GameCenter
 
 	private static function notifyListeners(inEvent:Dynamic)
 	{
-		#if(mobile && !android && !air)
+		#if ios
 		var type:String = Std.string(Reflect.field(inEvent, "type"));
 		var data:String = Std.string(Reflect.field(inEvent, "data"));
 		
@@ -98,7 +96,7 @@ class GameCenter
 		_init_func(args);*/
 		#end
 	
-		#if(mobile && !android && !air)
+		#if ios
 		if(!initialized)
 		{
 			set_event_handle(notifyListeners);
@@ -110,14 +108,14 @@ class GameCenter
 
 	public static function authenticate():Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_authenticate();
 		#end	
 	}
 	
 	public static function isAvailable():Bool 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			return gamecenter_isavailable();
 		#else
 			return false;
@@ -126,7 +124,7 @@ class GameCenter
 	
 	public static function isAuthenticated():Bool 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			return gamecenter_isauthenticated();
 		#else
 			return false;
@@ -135,7 +133,7 @@ class GameCenter
 	
 	public static function getPlayerName():String 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			return gamecenter_playername();
 		#else
 			return "None";
@@ -144,7 +142,7 @@ class GameCenter
 	
 	public static function getPlayerID():String 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			return gamecenter_playerid();
 		#else
 			return "None";
@@ -153,47 +151,47 @@ class GameCenter
 	
 	public static function showLeaderboard(categoryID:String):Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_showleaderboard(categoryID);
 		#end	
 	}
 	
 	public static function showAchievements():Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_showachievements();
 		#end	
 	}
 	
 	public static function reportScore(categoryID:String, score:Int):Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_reportscore(categoryID, score);
 		#end	
 	}
 	
 	public static function reportAchievement(achievementID:String, percent:Float):Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_reportachievement(achievementID, percent);
 		#end	
 	}
 	
 	public static function resetAchievements():Void 
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_resetachievements();
 		#end	
 	}
 	
 	public static function showAchievementBanner(title:String, message:String):Void
 	{
-		#if(mobile && !android && !air)
+		#if ios
 			gamecenter_showachievementbanner(title, message);
 		#end	
 	}
 	
-	#if(mobile && !android && !air)
+	#if ios
 	private static var set_event_handle = Lib.load("gamecenter", "gamecenter_set_event_handle", 1);
 	private static var gamecenter_initialize = Lib.load("gamecenter", "gamecenter_initialize", 0);
 	private static var gamecenter_authenticate = Lib.load("gamecenter", "gamecenter_authenticate", 0);
