@@ -1,3 +1,4 @@
+id=com.stencyl.gamecenter
 name=iOS Game Center Extension
 description=Integrate with iOS Game Center
 author=Jon
