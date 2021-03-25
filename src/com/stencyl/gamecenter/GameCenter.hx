@@ -1,4 +1,4 @@
-package;
+package com.stencyl.gamecenter;
 
 #if cpp
 import cpp.Lib;

@@ -2,7 +2,7 @@
 <project>
 	
 	<section if="ios">
-		<classpath name="." />
+		<source path="src" />
 		<dependency name="GameKit.framework" />
 	</section>
 	
