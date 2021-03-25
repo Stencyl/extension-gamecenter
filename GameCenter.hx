@@ -14,6 +14,9 @@ import openfl.utils.ByteArray;
 import openfl.display.BitmapData;
 import openfl.geom.Rectangle;
 
+#if ios
+@:buildXml('<include name="${haxelib:com.stencyl.gamecenter}/project/Build.xml"/>')
+#end
 class GameCenter 
 {	
 	private static var initialized:Bool = false;

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?> 
-<project> 
-
-	<ndll name="gamecenter" if="ios"/> 
-	<classpath name="." /> 
-	<dependency name="GameKit.framework" if="ios" /> 
-
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	
+	<section if="ios">
+		<classpath name="." />
+		<dependency name="GameKit.framework" />
+	</section>
+	
 </project>
