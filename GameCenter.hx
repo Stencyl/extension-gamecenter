@@ -6,10 +6,6 @@ import cpp.Lib;
 import openfl.Lib;
 #end
 
-#if android
-import lime.system.JNI;
-#end
-
 import com.stencyl.Engine;
 import com.stencyl.event.EventMaster;
 import com.stencyl.event.StencylEvent;
@@ -22,10 +18,6 @@ class GameCenter
 {	
 	private static var initialized:Bool = false;
 	
-	private static inline var ANDROID_CLASS:String = "GreeSDK";
-	private static var _init_func:Dynamic;
-	
-
 	private static function notifyListeners(inEvent:Dynamic)
 	{
 		#if ios
@@ -84,18 +76,6 @@ class GameCenter
 
 	public static function initialize():Void 
 	{
-		#if android
-		/*if(_init_func == null)
-		{
-			//_init_func = JNI.createStaticMethod(ANDROID_CLASS, "init", "()Ljava/lang/String;", true);
-			_init_func = JNI.createStaticMethod("Test", "init", "(Ljava/lang/String;)Ljava/lang/String;", true);
-		}
-
-		var args = new Array<Dynamic>();
-		args.push("testing");
-		_init_func(args);*/
-		#end
-	
 		#if ios
 		if(!initialized)
 		{
