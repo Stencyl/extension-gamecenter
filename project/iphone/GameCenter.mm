@@ -36,17 +36,11 @@ typedef void (*FunctionType)();
     return self;
 }
 
-- (void)dealloc 
-{
-    [super dealloc];
-}
-
 - (void)achievementViewControllerDidFinish:(GKAchievementViewController*)achViewController
 {
     UIWindow* window = [UIApplication sharedApplication].keyWindow;
     [window.rootViewController dismissModalViewControllerAnimated:YES];
     
-    [achViewController release];
 	onAchievementFinished();
 }
 
@@ -57,7 +51,6 @@ typedef void (*FunctionType)();
     UIWindow* window = [UIApplication sharedApplication].keyWindow;
     [window.rootViewController dismissModalViewControllerAnimated:YES];
     
-    [lbViewController release];
     onLeaderboardFinished();
 }
 
@@ -192,52 +185,48 @@ namespace gamecenter
     
     void showLeaderboard(const char* categoryID)
     {
-        NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		NSString* strCategory = [[NSString alloc] initWithUTF8String:categoryID];
-		
-		UIWindow* window = [UIApplication sharedApplication].keyWindow;
-		GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];  
-		
-        if(leaderboardController != nil) 
-        {
-			leaderboardController.category = strCategory;
-			leaderboardController.leaderboardDelegate = viewDelegate;
-			[window.rootViewController presentModalViewController:leaderboardController animated:YES];
-		}
-		
-		[strCategory release];
-		[pool drain];
-    }
+        @autoreleasepool {
+            NSString* strCategory = [[NSString alloc] initWithUTF8String:categoryID];
+    		
+    		UIWindow* window = [UIApplication sharedApplication].keyWindow;
+    		GKLeaderboardViewController *leaderboardController = [[GKLeaderboardViewController alloc] init];  
+    		
+            if(leaderboardController != nil) 
+            {
+    			leaderboardController.category = strCategory;
+    			leaderboardController.leaderboardDelegate = viewDelegate;
+    			[window.rootViewController presentModalViewController:leaderboardController animated:YES];
+    		}
+        }
+	}
     
     void reportScore(const char* categoryID, int score)
     {
-        NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		NSString* strCategory = [[NSString alloc] initWithUTF8String:categoryID];
-		GKScore* scoreReporter = [[[GKScore alloc] initWithCategory:strCategory] autorelease];
-        
-		if(scoreReporter)
-        {
-			scoreReporter.value = score;
-			
-			[scoreReporter reportScoreWithCompletionHandler:^(NSError *error) 
-            {   
-				if(error != nil)
-                {
-					NSLog(@"Game Center: Error occurred reporting score-");
-					NSLog(@"  %@", [error userInfo]);
-					sendGameCenterEvent("score-failed", categoryID);
-				}
-                
-                else
-                {
-					NSLog(@"Game Center: Score was successfully sent");
-					sendGameCenterEvent("score-success", categoryID);
-				}
-			}];   
-		}
-        
-		[strCategory release];
-		[pool drain];
+        @autoreleasepool {
+            NSString* strCategory = [[NSString alloc] initWithUTF8String:categoryID];
+    		GKScore* scoreReporter = [[GKScore alloc] initWithCategory:strCategory];
+            
+    		if(scoreReporter)
+            {
+    			scoreReporter.value = score;
+    			
+    			[scoreReporter reportScoreWithCompletionHandler:^(NSError *error) 
+                {   
+    				if(error != nil)
+                    {
+    					NSLog(@"Game Center: Error occurred reporting score-");
+    					NSLog(@"  %@", [error userInfo]);
+    					sendGameCenterEvent("score-failed", categoryID);
+    				}
+                    
+                    else
+                    {
+    					NSLog(@"Game Center: Score was successfully sent");
+    					sendGameCenterEvent("score-success", categoryID);
+    				}
+    			}];   
+    		}
+        }
     }
     
     //ACHIEVEMENTS
@@ -275,43 +264,41 @@ namespace gamecenter
     
     void reportAchievement(const char* achievementID, float percent)
     {
-        NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-		NSString* strAchievement = [[NSString alloc] initWithUTF8String:achievementID];
-		GKAchievement* achievement = [[[GKAchievement alloc] initWithIdentifier:strAchievement] autorelease];
-        
-		if(achievement)
-        {
-        	/*if(percent >= 1)
-        	{
-        		achievement.showsCompletionBanner = YES;
-        	}*/
-        	
-			achievement.percentComplete = percent;    
-			[achievement reportAchievementWithCompletionHandler:^(NSError *error)
+        @autoreleasepool {
+            NSString* strAchievement = [[NSString alloc] initWithUTF8String:achievementID];
+    		GKAchievement* achievement = [[GKAchievement alloc] initWithIdentifier:strAchievement];
+            
+    		if(achievement)
             {
-				if(error != nil)
+            	/*if(percent >= 1)
+            	{
+            		achievement.showsCompletionBanner = YES;
+            	}*/
+            	
+    			achievement.percentComplete = percent;    
+    			[achievement reportAchievementWithCompletionHandler:^(NSError *error)
                 {
-					NSLog(@"Game Center: Error occurred reporting achievement-");
-					NSLog(@"  %@", [error userInfo]);
-					sendGameCenterEvent("achieve-failed", achievementID);
-				}
-                
-                else
-                {
-					NSLog(@"Game Center: Achievement report successfully sent");
-					sendGameCenterEvent("achieve-success", achievementID);
-				}
-                
-			}];
-		}
-        
-        else 
-        {
-			sendGameCenterEvent("achieve-failed", achievementID);
-		}
-		
-		[strAchievement release];
-		[pool drain];
+    				if(error != nil)
+                    {
+    					NSLog(@"Game Center: Error occurred reporting achievement-");
+    					NSLog(@"  %@", [error userInfo]);
+    					sendGameCenterEvent("achieve-failed", achievementID);
+    				}
+                    
+                    else
+                    {
+    					NSLog(@"Game Center: Achievement report successfully sent");
+    					sendGameCenterEvent("achieve-success", achievementID);
+    				}
+                    
+    			}];
+    		}
+            
+            else 
+            {
+    			sendGameCenterEvent("achieve-failed", achievementID);
+    		}
+        }
     }
     
     void showAchievementBanner(const char* title, const char* message)
@@ -320,9 +307,6 @@ namespace gamecenter
     	NSString* m = [[NSString alloc] initWithUTF8String:message];
     	
     	[GKNotificationBanner showBannerWithTitle:t message:m completionHandler:nil];
-    	
-    	[t release];
-    	[m release];
     }
     
     //CALLBACKS
