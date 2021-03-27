@@ -1,5 +1,5 @@
 id=com.stencyl.gamecenter
-name=iOS Game Center Extension
+name=iOS Game Center
 description=Integrate with iOS Game Center
 author=Jon
 website=http://www.stencyl.com
