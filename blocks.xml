@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blocks>
+
+    <block tag="gamecenter-init"
+           code="com.stencyl.gamecenter.GameCenter.initialize();"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+    </block>
+
+    <block tag="gamecenter-enabled"
+           code="com.stencyl.gamecenter.GameCenter.isAuthenticated()"
+           type="normal"
+           returns="boolean"
+           category="mobile"
+           helpURL="game-mobile">
+    </block>
+
+    <block tag="gamecenter-id-name"
+           code="com.stencyl.gamecenter.GameCenter.getPlayer~()"
+           type="normal"
+           returns="text"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <dropdown order="0">
+                <choices>
+                    <c text="@name" code="Name" />
+                    <c text="@ID" code="ID" />
+                </choices>
+            </dropdown>
+        </fields>
+    </block>
+
+    <block tag="gamecenter-board-submit"
+           code="com.stencyl.gamecenter.GameCenter.reportScore(~, ~);"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <int order="0" />
+            <text order="1" />
+        </fields>
+    </block>
+
+    <block tag="gamecenter-board-show"
+           code="com.stencyl.gamecenter.GameCenter.showLeaderboard(~);"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <text order="0" />
+        </fields>
+    </block>
+
+    <block tag="gamecenter-achievement-submit"
+           code="com.stencyl.gamecenter.GameCenter.reportAchievement(~, ~);"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <text order="0" />
+            <number order="1" />
+        </fields>
+    </block>
+
+    <block tag="gamecenter-achievement-show-reset"
+           code="com.stencyl.gamecenter.GameCenter.~Achievements();"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <dropdown order="0">
+                <choices>
+                    <c text="@show" code="show" />
+                    <c text="@reset" code="reset" />
+                </choices>
+            </dropdown>
+        </fields>
+    </block>
+
+    <block tag="gamecenter-achievement-banner"
+           code="com.stencyl.gamecenter.GameCenter.showAchievementBanner(~, ~);"
+           type="action"
+           returns="void"
+           category="mobile"
+           helpURL="game-mobile">
+        <fields>
+            <text order="0" />
+            <text order="1" />
+        </fields>
+    </block>
+
+</blocks>

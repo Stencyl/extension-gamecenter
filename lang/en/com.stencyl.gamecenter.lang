@@ -1,0 +1,28 @@
+gamecenter-achievement-banner=show banner with title %0 and message %1 [i:gamecenter]
+gamecenter-achievement-banner.help=Show a Game Center achievement banner
+
+gamecenter-achievement-show-reset=%0 achievements [i:gamecenter]
+gamecenter-achievement-show-reset.help=Show achievements board or erase Player's achievement data for this game
+
+gamecenter-achievement-submit=report achievement %0 as %1 [pct] complete [i:gamecenter]
+gamecenter-achievement-submit.help=Submit an achievement to Game Center
+
+gamecenter-board-show=show leaderboard for %0 [i:gamecenter]
+gamecenter-board-show.help=Opens up the master leaderboard in Game Center
+
+gamecenter-board-submit=submit score %0 to [i:gamecenter] with ID %1
+gamecenter-board-submit.help=Submits a score to Game Center
+
+gamecenter-enabled=Game Center is started [i:gamecenter]
+gamecenter-enabled.help=Returns true if Game Center is initialized
+
+gamecenter-id-name=%0 of [i:gamecenter] player
+gamecenter-id-name.help=Display Name or Internal ID
+
+gamecenter-init=start Game Center [i:gamecenter]
+gamecenter-init.help=Initializes Game Center API
+
+show=show
+reset=reset
+name=name
+ID=ID
