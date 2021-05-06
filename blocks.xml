@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <blocks>
 
+    <block tag="mobile-gamecenter-id"
+           code="subjectID"
+           type="normal"
+           returns="text"
+           category="mobile"
+           hidden="true"
+           helpURL="event-mobile">
+        <context>
+            <requiredContext type="has" value="subjectID:String" />
+        </context>
+    </block>
+
+    <block tag="event-mobile-gamecenter"
+           type="event"
+           returns="void"
+           category="events"
+           helpURL="event-mobile">
+        <code>
+            <event-def params="subjectID:String" innercode="#1" listener="addGameCenterListener(#0, ${eventRef});" />
+        </code>
+        <fields>
+            <dropdown order="0">
+                <choices>
+                    <c text="@event.mobile.gamecenter.ready" code="300" />
+                    <c text="@event.mobile.gamecenter.score" code="301" />
+                    <c text="@event.mobile.gamecenter.achieve" code="302" />
+                    <c text="@event.mobile.gamecenter.reset" code="303" />
+                    <c text="@event.mobile.gamecenter.ready.fail" code="304" />
+                    <c text="@event.mobile.gamecenter.score.fail" code="305" />
+                    <c text="@event.mobile.gamecenter.achieve.fail" code="306" />
+                    <c text="@event.mobile.gamecenter.reset.fail" code="307" />
+                </choices>
+            </dropdown>
+            <code-block order="1" />
+            <attached-block order="2" tag="mobile-gamecenter-id" />
+        </fields>
+        <context>
+            <innerContext type="class" value="com.stencyl.behavior.Script" />
+            <innerContext type="has" value="subjectID:String" />
+        </context>
+    </block>
+
     <block tag="gamecenter-init"
            code="com.stencyl.gamecenter.GameCenter.initialize();"
            type="action"
