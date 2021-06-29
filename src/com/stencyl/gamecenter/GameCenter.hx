@@ -16,6 +16,8 @@ import openfl.geom.Rectangle;
 
 #if ios
 @:buildXml('<include name="${haxelib:com.stencyl.gamecenter}/project/Build.xml"/>')
+//This is just here to prevent the otherwise indirectly referenced native code from bring stripped at link time.
+@:cppFileCode('extern "C" int gamecenter_register_prims();void com_stencyl_gamecenter_link(){gamecenter_register_prims();}')
 #end
 class GameCenter 
 {	
