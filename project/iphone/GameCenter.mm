@@ -1,7 +1,14 @@
 #include <GameCenter.h>
 #import <UIKit/UIKit.h>
 #import <CoreFoundation/CoreFoundation.h>
-#import <GameKit/GameKit.h>
+#import <GameKit/GKAchievement.h>
+#import <GameKit/GKAchievementViewController.h>
+#import <GameKit/GKGameCenterViewController.h>
+#import <GameKit/GKLeaderboard.h>
+#import <GameKit/GKLeaderboardViewController.h>
+#import <GameKit/GKLocalPlayer.h>
+#import <GameKit/GKNotificationBanner.h>
+#import <GameKit/GKScore.h>
 
 
 //NOTE:  These classes use some methods that are marked depricated as of IOS 7.  (e.g. presentModalViewController, etc..)
