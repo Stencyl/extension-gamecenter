@@ -80,7 +80,7 @@
     </block>
 
     <block tag="gamecenter-board-submit"
-           code="com.stencyl.gamecenter.GameCenter.reportScore(~, ~);"
+           code="com.stencyl.gamecenter.GameCenter.reportScore(#1, #0);"
            type="action"
            returns="void"
            category="mobile"
