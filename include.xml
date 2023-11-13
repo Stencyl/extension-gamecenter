@@ -4,6 +4,7 @@
 	<section if="ios">
 		<source path="src" />
 		<dependency name="GameKit.framework" />
+		<template path="templates" />
 	</section>
 	
 </project>
